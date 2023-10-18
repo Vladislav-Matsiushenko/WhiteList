@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="customer_login">
+        <observer name="WhiteListObserver_Login" instance="Magedia\WhiteList\Observer\Login" />
+    </event>
+
+    <event name="customer_logout">
+        <observer name="WhiteListObserver_Logout" instance="Magedia\WhiteList\Observer\Logout" />
+    </event>
+</config>
