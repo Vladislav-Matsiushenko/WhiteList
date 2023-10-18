@@ -1,60 +1,90 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Magedia\WhiteList\Model;
 
-use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
-use Magento\Framework\FileSystem\DirectoryList;
-use Magento\Framework\Exception\FileSystemException;
-use Magento\Framework\Exception\Plugin\AuthenticationException;
+use Magedia\WhiteList\Api\Data\WhiteListInterface;
+use Magedia\WhiteList\Model\ResourceModel\WhiteList as WhiteListResource;
+use Magento\Framework\Model\AbstractModel;
 
-class WhiteList
+class WhiteList extends AbstractModel implements WhiteListInterface
 {
-    public const SESSION_KEY = 'WhiteList';
-    public const SESSION_VALUE = 1;
-    public const WHITE_LIST_IP_DIR = '/code/Magedia/WhiteList/etc/WhiteListIP';
-
     /**
-     * @var RemoteAddress $remoteAddress
+     * @inheritdoc
      */
-    private $remoteAddress;
-
-    /**
-     * @var DirectoryList $dir
-     */
-    private $dir;
-
-    /**
-     * @param RemoteAddress $remoteAddress
-     * @param DirectoryList $dir
-     */
-    public function __construct(RemoteAddress $remoteAddress, DirectoryList $dir)
+    protected function _construct()
     {
-        $this->remoteAddress = $remoteAddress;
-        $this->dir = $dir;
+        $this->_init(WhiteListResource::class);
+    }
+
+    /**
+     * @return ?int
+     */
+    public function getId(): ?int
+    {
+        return $this->getData(WhiteListInterface::ID);
+    }
+
+    /**
+     * @param int $id
+     * @return $this
+     */
+    public function setId(mixed $id)
+    {
+        $this->setData(WhiteListInterface::ID, $id);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIpAddress(): string
+    {
+        return $this->getData(WhiteListInterface::IP_ADDRESS);
+    }
+
+    /**
+     * @param string $ipAddress
+     * @return $this
+     */
+    public function setIpAddress(string $ipAddress)
+    {
+        $this->setData(WhiteListInterface::IP_ADDRESS, $ipAddress);
+        return $this;
     }
 
     /**
      * @return bool
-     * @throws FileSystemException
-     * @throws AuthenticationException
      */
-    public function inWhiteList(): bool
+    public function getIsAllowed(): bool
     {
-        $ip = $this->remoteAddress->getRemoteAddress();
-        $filename = $this->dir->getPath('app') . self::WHITE_LIST_IP_DIR;
-        if (!file_exists($filename)) {
-            throw new AuthenticationException(__('WhiteListIP file does not exist'));
-        }
+        return $this->getData(WhiteListInterface::IS_ALLOWED);
+    }
 
-        $list = file_get_contents($filename);
-        if ($list === false) {
-            throw new AuthenticationException(__('Can not open WhiteListIP file'));
-        }
+    /**
+     * @param bool $isAllowed
+     * @return $this
+     */
+    public function setIsAllowed(bool $isAllowed)
+    {
+        $this->setData(WhiteListInterface::IS_ALLOWED, $isAllowed);
+        return $this;
+    }
 
-        $pattern = sprintf("/%s\n/", $ip);
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->getData(WhiteListInterface::DESCRIPTION);
+    }
 
-        return preg_match($pattern, $list);
+    /**
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription(string $description)
+    {
+        $this->setData(WhiteListInterface::DESCRIPTION, $description);
+        return $this;
     }
 }

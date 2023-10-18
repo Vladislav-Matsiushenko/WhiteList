@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Magedia\WhiteList\Plugin;
 
-use Magedia\WhiteList\Model\WhiteList;
+use Magedia\WhiteList\Model\WhiteListRepository;
 use Magento\Catalog\Model\Product;
 use Magento\Customer\Model\Session;
 
@@ -32,7 +32,7 @@ class RenderAddToCartButton
      */
     public function afterIsSalable(Product $subject, $result)
     {
-        if ($this->session->getData(WhiteList::SESSION_KEY) === WhiteList::SESSION_VALUE) {
+        if ($this->session->getData(WhiteListRepository::SESSION_KEY) === WhiteListRepository::SESSION_VALUE) {
             return $result;
         }
         return false;

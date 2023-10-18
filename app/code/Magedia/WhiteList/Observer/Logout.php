@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Magedia\WhiteList\Observer;
 
-use Magedia\WhiteList\Model\WhiteList;
+use Magedia\WhiteList\Model\WhiteListRepository;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Customer\Model\Session;
@@ -31,6 +31,6 @@ class Logout implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        $this->session->unsetData(WhiteList::SESSION_KEY);
+        $this->session->unsetData(WhiteListRepository::SESSION_KEY);
     }
 }

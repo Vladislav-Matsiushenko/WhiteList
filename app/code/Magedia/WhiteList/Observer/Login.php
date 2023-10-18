@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Magedia\WhiteList\Observer;
 
-use Magedia\WhiteList\Model\WhiteList;
+use Magedia\WhiteList\Model\WhiteListRepository;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Customer\Model\Session;
@@ -12,9 +12,9 @@ use Magento\Customer\Model\Session;
 class Login implements ObserverInterface
 {
     /**
-     * @var WhiteList $whiteList
+     * @var WhiteListRepository $whiteListRepository
      */
-    private $whiteList;
+    private $whiteListRepository;
 
     /**
      * @var Session $session
@@ -22,13 +22,13 @@ class Login implements ObserverInterface
     private $session;
 
     /**
-     * @param WhiteList $whiteList
+     * @param WhiteListRepository $whiteListRepository
      * @param Session $session
      * @throws \Magento\Framework\Exception\SessionException
      */
-    public function __construct(WhiteList $whiteList, Session $session)
+    public function __construct(WhiteListRepository $whiteListRepository, Session $session)
     {
-        $this->whiteList = $whiteList;
+        $this->whiteListRepository = $whiteListRepository;
         $this->session = $session;
         $this->session->start();
     }
@@ -38,8 +38,8 @@ class Login implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        if ($this->whiteList->inWhiteList()) {
-            $this->session->setData($this->whiteList::SESSION_KEY, $this->whiteList::SESSION_VALUE);
+        if ($this->whiteListRepository->inWhiteList()) {
+            $this->session->setData($this->whiteListRepository::SESSION_KEY, $this->whiteListRepository::SESSION_VALUE);
         }
     }
 }
