@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Magedia\WhiteList\Model;
 
+use Magedia\WhiteList\Model\ResourceModel\WhiteList\Collection as WhiteListCollection;
+use Magedia\WhiteList\Model\ResourceModel\WhiteList\CollectionFactory as WhiteListCollectionFactory;
 use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
-use Magento\Framework\FileSystem\DirectoryList;
-use Magento\Framework\Exception\FileSystemException;
-use Magento\Framework\Exception\Plugin\AuthenticationException;
 
 class WhiteListRepository
 {
@@ -16,45 +15,38 @@ class WhiteListRepository
     public const WHITE_LIST_IP_DIR = '/code/Magedia/WhiteList/etc/WhiteListIP';
 
     /**
+     * @var WhiteListCollectionFactory $whiteListCollectionFactory
+     */
+    private $whiteListCollectionFactory;
+
+    /**
      * @var RemoteAddress $remoteAddress
      */
     private $remoteAddress;
 
     /**
-     * @var DirectoryList $dir
-     */
-    private $dir;
-
-    /**
+     * @param WhiteListCollectionFactory $whiteListCollectionFactory
      * @param RemoteAddress $remoteAddress
-     * @param DirectoryList $dir
      */
-    public function __construct(RemoteAddress $remoteAddress, DirectoryList $dir)
+    public function __construct(WhiteListCollectionFactory $whiteListCollectionFactory, RemoteAddress $remoteAddress)
     {
+        $this->whiteListCollectionFactory = $whiteListCollectionFactory;
         $this->remoteAddress = $remoteAddress;
-        $this->dir = $dir;
     }
 
     /**
      * @return bool
-     * @throws FileSystemException
-     * @throws AuthenticationException
      */
     public function inWhiteList(): bool
     {
-        $ip = $this->remoteAddress->getRemoteAddress();
-        $filename = $this->dir->getPath('app') . self::WHITE_LIST_IP_DIR;
-        if (!file_exists($filename)) {
-            throw new AuthenticationException(__('WhiteListIP file does not exist'));
+        $collection = $this->whiteListCollectionFactory->create();
+        $ipAddress = $this->remoteAddress->getRemoteAddress();
+
+        foreach ($collection as $a) {
+            if ($a->getIpAddress() === $ipAddress) {
+                return true;
+            }
         }
-
-        $list = file_get_contents($filename);
-        if ($list === false) {
-            throw new AuthenticationException(__('Can not open WhiteListIP file'));
-        }
-
-        $pattern = sprintf("/%s\n/", $ip);
-
-        return preg_match($pattern, $list);
+        return false;
     }
 }

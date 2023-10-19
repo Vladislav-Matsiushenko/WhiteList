@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Magedia_WhiteList::main_menu"
+             title="Magedia"
+             translate="title"
+             module="Magedia_WhiteList"
+             sortOrder="9999"
+             resource="Magento_Backend::Admin"/>
+        <add id="Magedia_WhiteList::sub_menu"
+             title="White List"
+             translate="title"
+             module="Magedia_WhiteList"
+             sortOrder="1"
+             parent="Magedia_WhiteList::main_menu"
+             action="menuitem/index/index"
+             resource="Magedia_WhiteList::main_menu"/>
+    </menu>
+</config>
