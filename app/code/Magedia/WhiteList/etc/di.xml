@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magedia\WhiteList\Api\Data\WhiteListInterface"
+                type="Magedia\WhiteList\Model\WhiteList"/>
+
+    <type name="Magento\Catalog\Model\Product">
+        <plugin name="WhiteListPlugin_RenderAddToCartButton" type="Magedia\WhiteList\Plugin\RenderAddToCartButton" />
+    </type>
+</config>

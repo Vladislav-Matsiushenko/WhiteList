@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="white_lst" translate="label" sortOrder="100">
+            <label>White List</label>
+        </tab>
+
+        <section id="add_ip_address" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Add IP address</label>
+
+            <tab>white_lst</tab>
+            <resource>Magedia_WhiteList::sub_menu</resource>
+
+            <group id="parameters" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Parameters</label>
+
+                <field id="ip_address" translate="label comment" sortOrder="1" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IP address</label>
+                    <comment>127.0.0.1</comment>
+                    <validate>validate-number required-entry</validate>
+                </field>
+
+                <field id="is_allowed" translate="label comment" sortOrder="1" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Is allowed</label>
+                    <comment>Yes</comment>
+                    <validate>validate-number required-entry</validate>
+                </field>
+
+                <field id="description" translate="label comment" sortOrder="1" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Description</label>
+                    <comment>Something</comment>
+                    <validate>validate-number required-entry</validate>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
